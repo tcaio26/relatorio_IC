@@ -1,0 +1,29 @@
+ANOTAÇÕES PARA RELATORIO FINAL
+
+Introdução-objetivos:
+
+utilizar os objetivos da nossa proposta de ic, estender a parte de estudos original (algoritmo do rissanen, livros que li, etc.). Também citar o estudo da parte de esqueleto, não só a criação do algoritmo. Tomar cuidado falando que o escopo foi alterado, mudar a visão para outra compressão de dados e mostrar como que combina com a proposta original. Ex.: simulei as cadeias com base no que aprendi.
+
+Definir melhor a notação matemática.
+
+A notação matemática rigorosa pode ser trocada para os resultados, como demonstração de meus estudos.
+
+sequências passadas melhor usar letras minúsculas, não é aleatório.
+
+no geral precisa de mais rigor. espaço entre o que vai ser citado e a citação, ex caio [1].
+
+Resultados:
+Detalhar um pouco mais o que estudei e as simulações iniciais. Pegar notação do galves e eva. descrever algoritmo do rissanen. incluir 
+
+tirar o "sem muita importância", valorizar simulações iniciais.
+
+tentar usar a matriz 64x64. Mesmo para a cadeia binária, escrever A={0,1}. Incluir resultados de irredutibilidade para as duas cadeias.
+
+Discussão: tirar o "talvez" de "(e talvez outras propriedades)", sem incerteza aqui!
+
+"o custo do algoritmo empírico ainda não pôde ser calculado" tirar, negativo, dá para manter o resto.
+
+no geral evitar negatividade e incerteza, o relatório é para me valorizar
+
+evitar páginas com muito espaço vazio.
+
