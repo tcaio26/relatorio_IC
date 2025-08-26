@@ -122,33 +122,33 @@ p = 0.3
 probabilidades[1:2] = c(0, 0)
 for(i in 3:length(probabilidades)){
   prob = rnorm(1, mean = p, sd = 0.2)
-  if(prob>=1) prob = 0.95
-  if(prob<=0) prob = 0.05
+  if(prob>=0.95) prob = 0.94 #quero evitar probabilidades muito extremas na amostra de teste.
+  if(prob<=0.05) prob = 0.06
   probabilidades[i] = prob
   print(prob)
-  p = 1-prob #evitar probabilidades parecidas entre contextos parecidos. Talvez seja melhor usar sort(contextos).
+  p = 1-prob #evitar probabilidades parecidas entre contextos parecidos.
 }
 
-
+#Exportação de contextos e probabilidades para fácil acesso
+library(tidyverse)
+df_amostra = tibble(contexto = contextos, prob = probabilidades)
+write_csv(df_amostra, 'parametros_geradores_amostra.csv')
 
 #função de simulação
-sim_cemav_bin = function(contextos, probabilidades, n, amostra_inicial = c(), text = T, show_process=F){
+sim_cemav_bin_2 = function(contextos, probabilidades, n, amostra_inicial = c(), text = T, show_process=F){
   k = max(nchar(contextos))
   if(show_process) print(paste("ordem:", k))
-  if(length(amostra_inicial)==0) amostra_inicial = sample(c(0,1),2*k,TRUE)
+  if(length(amostra_inicial)==0) amostra_inicial = paste(sample(c(0,1),2*k,TRUE), collapse='')
   
-  l = length(amostra_inicial)
-  if(show_process) print(paste("amostra inicial:", paste(amostra_inicial, collapse="")))
+  l = nchar(amostra_inicial)
+  if(show_process) print(paste("amostra inicial:", amostra_inicial))
   
-  progresso = txtProgressBar(min = 0, max = n, initial = 0)
-  
-  amostra = character(l+n)
-  amostra[1:l] = amostra_inicial
+  amostra = amostra_inicial
   
   for(i in (l+1):(n+l)){
-    passado_relevante = paste(amostra[i-(k:1)], collapse = '')
+    passado_relevante = substr(amostra, nchar(amostra)-k+1, nchar(amostra))
     
-    c = which(apply(array(contextos), 1, function(x) grepl(glue::glue("{x}$"),passado_relevante)))
+    c = which(apply(array(paste0(contextos,"$")), 1, function(x) grepl(x,passado_relevante)))
     
     if(length(c)==0){
       stop(glue::glue("SEM CONTEXTO PARA {passado_relevante}"))
@@ -156,20 +156,19 @@ sim_cemav_bin = function(contextos, probabilidades, n, amostra_inicial = c(), te
     
     else{
       x = sample(c(0,1),1,T,c(1-probabilidades[c],probabilidades[c]))
-      amostra[i] = x
+      amostra = paste0(amostra,x)
     }
-    print(glue::glue("{(i-l)*100/n}%"))
+    if(show_process) if(i %in% round((1:100)*(n+l)/100, digits = 0))print(glue::glue("{round((i)*100/(n+l))}%"))
   }
-  amostra = amostra[(l+1):(n+l)]
+  amostra = substr(amostra, l+1,n+l)
   
-  if(text) return(paste(amostra, collapse = ""))
-  else return(amostra)
+  if(text) return(amostra)
+  else return(strsplit(amostra, ''))
 }
 
-n = 10^6
+n = 10^5
 
-amostra = sim_cemav_bin(contextos, probabilidades, n, show_process = T)
+amostra = sim_cemav_bin_2(contextos, probabilidades, n, show_process = T)
 
-cat(amostra, file = "amostra_o10_k3_100k.txt")
-
+cat(amostra, file = "amostra_skel_100k.txt")
 
