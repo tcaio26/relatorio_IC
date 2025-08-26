@@ -166,9 +166,10 @@ sim_cemav_bin = function(contextos, probabilidades, n, amostra_inicial = c(), te
   else return(amostra)
 }
 
-n = 10^7
+n = 10^6
 
 amostra = sim_cemav_bin(contextos, probabilidades, n, show_process = T)
 
-cat(amostra, file = "amostra_o10_k3_1m.txt")
+cat(amostra, file = "amostra_o10_k3_100k.txt")
+
 
